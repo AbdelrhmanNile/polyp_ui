@@ -1,0 +1,53 @@
+Hospital Infrastructure: {
+    DataBase: {
+        Patient Database: {
+            shape: image
+            icon: https://icons.terrastruct.com/essentials/117-database.svg
+        }
+        File Storage for Images: {
+            shape: image
+            icon: https://icons.terrastruct.com/azure/Storage%20Service%20Color/AzureFXTEdgeFiler.svg
+        }
+    }
+    API
+}
+
+Endoscope: {
+    Camera
+    Display
+
+
+Compute Engine: {
+    Detection Model
+    Segmentation Model
+}
+}
+
+
+
+Doctor: {
+    shape: image
+    icon: https://icons.terrastruct.com/essentials/365-user.svg
+}
+
+Input: {
+    shape: image
+    icon: https://icons.terrastruct.com/essentials/004-picture.svg
+}
+
+Hospital Infrastructure.API -> Hospital Infrastructure.DataBase: "Request"
+Hospital Infrastructure.DataBase -> Hospital Infrastructure.API: "Response"
+
+Endoscope.Camera -> Endoscope.Compute Engine.Detection Model
+
+Endoscope.Compute Engine.Detection Model -> Endoscope.Compute Engine.Segmentation Model: "Detected Polyps"
+Endoscope.Compute Engine.Segmentation Model -> Endoscope.Display: "Segmented Polyps"
+
+Endoscope.Compute Engine -> Hospital Infrastructure.API: "Request"
+Hospital Infrastructure.API -> Endoscope.Compute Engine: "Response"
+
+Doctor -> Endoscope.Display
+Endoscope.Display -> Doctor
+Endoscope.Camera -> Endoscope.Display
+
+Input -> Endoscope.Camera
