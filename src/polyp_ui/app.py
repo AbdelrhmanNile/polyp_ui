@@ -49,9 +49,9 @@ class EndoscopeDevice:
 
         raw_path = "/home/pirate/projects/polyp_ui/output/raw/"
         segmented_path = "/home/pirate/projects/polyp_ui/output/segmented/"
-        cv2.imwrite(f"{raw_path}{self.counter}.jpg", frame)
+        # cv2.imwrite(f"{raw_path}{self.counter}.jpg", frame)
 
-        db.insert_ColonoscopyImage(1, f"{raw_path}{self.counter}.jpg")
+        # db.insert_ColonoscopyImage(1, f"{raw_path}{self.counter}.jpg")
 
         if detection_enabled:
             annotated_frame = self.bbox_annotator.annotate(
@@ -62,12 +62,12 @@ class EndoscopeDevice:
 
         if segmentation_enabled:
             display_frame = self.mask_annotator.annotate(annotated_frame, detections)
-            cv2.imwrite(f"{segmented_path}{self.counter}.jpg", display_frame)
-            db.insert_SegmentationOutput(1, 1, f"{segmented_path}{self.counter}.jpg")
+            # cv2.imwrite(f"{segmented_path}{self.counter}.jpg", display_frame)
+            # db.insert_SegmentationOutput(1, 1, f"{segmented_path}{self.counter}.jpg")
         else:
             display_frame = annotated_frame
 
-        db.insert_DetectedPolyps(self.counter, 1, len(detections))
+        # db.insert_DetectedPolyps(self.counter, 1, len(detections))
 
         self.counter += 1
 
@@ -81,6 +81,8 @@ class Examination:
         self.segmentation_enabled = True
         self.is_paused = False
 
+        self.detection_model = DetectionModel("./src/polyp_ui/models/best.pt")
+
     def toggle_pause_resume(self):
         self.is_paused = not self.is_paused
 
@@ -92,16 +94,14 @@ class Examination:
 
     def perform(self, input_video):
         cap = cv2.VideoCapture(input_video)
-        detection_model = DetectionModel(
-            "./src/polyp_ui/models/best.pt"
-        )  # For detection
+        # For detection
 
         iterating, frame = cap.read()
         while iterating:
             while self.is_paused:
                 time.sleep(0.001)
 
-            detections = detection_model.detectPolyps(frame)
+            detections = self.detection_model.detectPolyps(frame)
             display_frame = self.device.captureImages(
                 frame, detections, self.detection_enabled, self.segmentation_enabled
             )
@@ -180,4 +180,4 @@ def setup_gradio_interface():
 
 demo = setup_gradio_interface()
 demo.queue()
-demo.launch(share=True)
+demo.launch()

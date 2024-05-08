@@ -1,6 +1,13 @@
 import database as db
 import os
 
+# delete the database file
+os.remove("colonoscopy_management.db")
+
+# delete images inside output/raw and output/segmented
+os.system("rm -rf output/raw/*")
+os.system("rm -rf output/segmented/*")
+
 db.init_database()
 
 db.insert_Doctor("Dr. Abdelrhman Nile", "Gastroenterologist")
