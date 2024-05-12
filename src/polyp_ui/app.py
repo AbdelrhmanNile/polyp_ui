@@ -129,14 +129,14 @@ def setup_gradio_interface():
 
     with gr.Blocks() as demo:
 
-        with gr.Tab("Patient Information"):
+        """ with gr.Tab("Patient Information"):
             with gr.Row():
                 with gr.Column():
                     patient_name = gr.Textbox(label="Patient Name", type="text")
                     p_dob = gr.Textbox(label="Date of Birth", type="text")
                     p_gender = gr.Dropdown(label="Gender", choices=["Male", "Female"])
 
-                    log_p_info = gr.Button("Log Patient Information")
+                    log_p_info = gr.Button("Log Patient Information") """
 
         with gr.Tab(label="Endoscope Interface"):
             with gr.Row():
@@ -170,14 +170,14 @@ def setup_gradio_interface():
         pause_btn.click(fn=examination.toggle_pause_resume)
         resume_btn.click(fn=examination.toggle_pause_resume)
 
-        log_p_info.click(
+        """ log_p_info.click(
             log_patient_start_session,
             inputs=[patient_name, p_dob, p_gender],
-        )
+        ) """
 
     return demo
 
 
 demo = setup_gradio_interface()
 demo.queue()
-demo.launch()
+demo.launch(share=True)
