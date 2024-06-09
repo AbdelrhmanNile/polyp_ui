@@ -180,4 +180,4 @@ def setup_gradio_interface():
 
 demo = setup_gradio_interface()
 demo.queue()
-demo.launch(share=True)
+demo.launch()
